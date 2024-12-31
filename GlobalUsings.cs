@@ -1,0 +1,6 @@
+global using Fonts;
+global using MauiToolkitListViewEventToCommandBehavior.Data;
+global using MauiToolkitListViewEventToCommandBehavior.PageModels;
+global using MauiToolkitListViewEventToCommandBehavior.Pages;
+global using MauiToolkitListViewEventToCommandBehavior.Services;
+global using MauiToolkitListViewEventToCommandBehavior.Utilities;

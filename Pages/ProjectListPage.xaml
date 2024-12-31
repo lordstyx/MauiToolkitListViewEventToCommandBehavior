@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:MauiToolkitListViewEventToCommandBehavior.PageModels"
+             xmlns:models="clr-namespace:MauiToolkitListViewEventToCommandBehavior.Models"
+             xmlns:controls="clr-namespace:MauiToolkitListViewEventToCommandBehavior.Pages.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="MauiToolkitListViewEventToCommandBehavior.Pages.ProjectListPage"
+             x:DataType="pageModels:ProjectListPageModel"
+             x:Name="contentPage"
+             Title="Projects">
+
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior
+                EventName="Appearing"                
+                Command="{Binding AppearingCommand}"
+                BindingContext="{Binding Path=BindingContext, Source={x:Reference contentPage}, x:DataType=ContentPage}"
+        />
+    </ContentPage.Behaviors>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:SelectedItemEventArgsConverter x:Key="SelectedItemEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <Grid>
+        <ListView
+            Grid.Column="0"
+            Grid.Row="0"
+            x:Name="projectsList"
+            ItemsSource="{Binding Projects}"
+            HorizontalOptions="StartAndExpand"
+            VerticalOptions="StartAndExpand"
+            SelectionMode="Single"
+            HasUnevenRows="True"
+        >
+            <ListView.Behaviors>
+                <toolkit:EventToCommandBehavior
+                    EventArgsConverter="{StaticResource SelectedItemEventArgsConverter}"
+                    EventName="ItemSelected"
+                    BindingContext="{Binding Path=BindingContext, Source={x:Reference projectsList}, x:DataType=ListView}"
+                    Command="{Binding NavigateToProjectCommand}" 
+                />
+            </ListView.Behaviors>
+
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Project">
+                    <ViewCell>
+                        <StackLayout Padding="5">
+                            <Label Text="{Binding Name}" FontSize="Title" TextColor="#fdba31" />
+                            <Label Text="{Binding ID}" Padding="5,0,0,0" />
+                            <Label Text="{Binding Description}" Padding="5,0,0,0" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <controls:AddButton 
+            Command="{Binding AddProjectCommand}" />
+    </Grid>
+</ContentPage>
